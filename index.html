@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <style>
+        .copy-popup {
+            color: white;
+            position: absolute;
+            background-color: rgb(0, 192, 0);
+            padding: 10px;
+            border-radius: 10px;
+            right: -100%;
+            bottom: 10%;
+            z-index: 10;
+        }
+
+        .animation {
+            animation: copyAnimation 4s ease-in-out;
+        }
+
+        @keyframes copyAnimation {
+            0% {
+                right: -100%;
+            }
+            10% {
+                right: 50px;
+            }
+            80% {
+                right: 50px;
+            }
+            100% {
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div
+        class="body-container p-5 w-full h-[100vh] bg-gradient-to-tl to-purple-500 from-blue-500 flex justify-center items-center relative overflow-hidden">
+        <div class="sm:w-[40%] rounded bg-white px-4 flex flex-col py-6 ">
+            <h1 class="text-3xl font-semibold mb-5">Random Password Generator</h1>
+            <div class="border rounded flex justify-between px-3 mb-5 py-2">
+                <p id="password-element" class="w-[60%] text-[gray]">Create password</p>
+                <i class="ri-file-copy-line text-[gray] hover:text-[black] cursor-pointer" onclick="showPopup()"></i>
+            </div>
+            <button class="bg-[green] text-white px-3 py-2 rounded w-[150px] mb-3"
+                onclick="generatePassword()">Generate</button>
+        </div>
+        <div class="copy-popup">
+            <p><span class="popup-password"></span> Copied</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        let password = "";
+        let passwordElement = document.querySelector('#password-element');
+        function generatePassword() {
+            password = "";
+            let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            for (let i = 0; i < 10; i++) {
+                let randomCharacter = Math.floor(Math.random() * characters.length);
+                password += characters[randomCharacter];
+            }
+            passwordElement.innerText = password;
+        }
+        function showPopup() {
+            let copyPopup = document.querySelector('.copy-popup');
+            let popupPassword = document.querySelector('.popup-password');
+            popupPassword.innerText = password;
+            if (password != "") {
+                navigator.clipboard.writeText(password)
+                copyPopup.classList.remove('animation');
+                setTimeout(() => {
+                    // Re-add the animation class to trigger the animation
+                    copyPopup.classList.add('animation');
+                }, 10);
+            }
+        }
+    </script>
+</body>
+
+</html>
